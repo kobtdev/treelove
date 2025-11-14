@@ -1,0 +1,308 @@
+/* ===== RESET & BODY ===== */
+body {
+  margin: 0;
+  padding: 0;
+  background: #ffe;
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #231f20;
+  overflow: auto;
+}
+
+a {
+  color: #000;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+/* ===== CONTAINER CHO HÌNH ẢNH RƠI (BACKGROUND LAYER) ===== */
+#falling-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1; /* Layer thấp nhất - phía sau tất cả */
+  overflow: hidden;
+}
+
+/* ===== STYLE CHO CÁC HÌNH ẢNH RƠI ===== */
+.falling-image {
+  position: absolute;
+  animation: fall linear infinite;
+  opacity: 0.6; /* Độ mờ mặc định */
+  transition: opacity 0.3s ease; /* Chuyển đổi mượt khi vào vùng text */
+  will-change: transform, opacity; /* Tối ưu performance */
+}
+
+/* Animation rơi xuống */
+@keyframes fall {
+  0% {
+    top: -100px;
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    top: 100vh;
+    transform: translateX(30px) rotate(360deg);
+  }
+}
+
+/* ===== HÌNH ẢNH THẬT (NẾU DÙNG PNG/JPG) ===== */
+.falling-image.image-type {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* ===== CÁC SHAPE MẪU (NẾU KHÔNG DÙNG ẢNH THẬT) ===== */
+
+/* Shape trái tim */
+.heart-shape {
+  width: 30px;
+  height: 30px;
+  background: #ff69b4;
+  transform: rotate(-45deg);
+  position: relative;
+}
+
+.heart-shape:before,
+.heart-shape:after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ff69b4;
+}
+
+.heart-shape:before {
+  top: -15px;
+  left: 0;
+}
+
+.heart-shape:after {
+  left: 15px;
+  top: 0;
+}
+
+/* Shape hoa */
+.flower-shape {
+  width: 25px;
+  height: 25px;
+  background: radial-gradient(circle, #ff1493, #ff69b4);
+  border-radius: 50%;
+  position: relative;
+}
+
+.flower-shape:before,
+.flower-shape:after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background: radial-gradient(circle, #ff69b4, #ff1493);
+  border-radius: 50%;
+}
+
+.flower-shape:before {
+  top: -8px;
+  left: 8px;
+  opacity: 0.7;
+}
+
+.flower-shape:after {
+  top: 8px;
+  left: -8px;
+  opacity: 0.7;
+}
+
+/* Shape lá */
+.leaf-shape {
+  width: 20px;
+  height: 35px;
+  background: linear-gradient(135deg, #90EE90, #228B22);
+  border-radius: 0 100% 0 100%;
+  transform: rotate(20deg);
+}
+
+/* Shape ngôi sao */
+.star-shape {
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 20px solid gold;
+  position: relative;
+}
+
+.star-shape:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 20px solid gold;
+  position: absolute;
+  top: 7px;
+  left: -12px;
+}
+
+/* ===== LAYOUT CHÍNH ===== */
+#main {
+  width: 100%;
+  position: relative;
+  z-index: 10; /* Cao hơn falling-container */
+}
+
+#wrap {
+  position: relative;
+  margin: 0 auto;
+  width: 1100px;
+  height: 680px;
+  margin-top: 10px;
+  z-index: 10;
+}
+
+/* ===== PHẦN VĂN BẢN ===== */
+#text {
+  width: 400px;
+  height: 425px;
+  left: 60px;
+  top: 80px;
+  position: absolute;
+  z-index: 15; /* Cao nhất - luôn hiển thị trên cùng */
+  padding: 10px;
+  /* Không có background - hình ảnh sẽ tự mờ đi khi rơi vào vùng này */
+}
+
+#code {
+  display: none;
+  font-size: 16px;
+}
+
+.say {
+  margin-left: 5px;
+}
+
+.say-final {
+  display: block; 
+  text-align: left; 
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* ===== PHẦN ĐỒNG HỒ ===== */
+#clock-box {
+  position: absolute;
+  left: 60px;
+  top: 550px;
+  font-size: 28px;
+  display: none;
+  z-index: 15; /* Cao nhất */
+  padding: 10px;
+  /* Không có background - hình ảnh sẽ tự mờ đi */
+}
+
+#clock-box a {
+  font-size: 28px;
+  text-decoration: none;
+}
+
+#clock {
+  margin-left: 48px;
+}
+
+#clock .digit {
+  font-size: 64px;
+}
+
+/* ===== CANVAS (CÂY VÀ HOA) ===== */
+#canvas {
+  margin: 0 auto;
+  width: 1100px;
+  height: 680px;
+  position: relative;
+  z-index: 12; /* Giữa text và falling images */
+}
+
+/* ===== KHÁC ===== */
+#player {
+  position: relative;
+  z-index: 5;
+}
+
+#error {
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 60px;
+  display: none;
+  z-index: 20;
+  position: relative;
+}
+
+.hand {
+  cursor: pointer;
+}
+
+.space {
+  margin-right: 150px;
+}
+
+/* ===== RESPONSIVE (TÙY CHỌN) ===== */
+@media screen and (max-width: 1200px) {
+  #wrap {
+    width: 95%;
+    max-width: 1100px;
+  }
+  
+  #canvas {
+    width: 100%;
+    max-width: 1100px;
+  }
+  
+  #text {
+    left: 30px;
+  }
+  
+  #clock-box {
+    left: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #text {
+    width: 90%;
+    left: 5%;
+    font-size: 14px;
+  }
+  
+  #code {
+    font-size: 14px;
+  }
+  
+  #clock-box {
+    font-size: 20px;
+    left: 5%;
+  }
+  
+  #clock .digit {
+    font-size: 48px;
+  }
+  
+  .falling-image {
+    opacity: 0.4; /* Giảm opacity trên mobile để không quá náo nhiệt */
+  }
+}
+
+/* ===== TỐI ƯU HIỆU NĂNG ===== */
+#falling-container * {
+  will-change: transform, opacity;
+}
+
+/* Giảm animation khi người dùng bật chế độ giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+  .falling-image {
+    animation-duration: 20s !important;
+  }
+}
